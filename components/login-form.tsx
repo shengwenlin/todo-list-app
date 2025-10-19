@@ -38,8 +38,8 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
+      // Redirect to home page after successful login
+      router.push("/");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -49,62 +49,66 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
+      <div className="bg-white rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] p-8 border border-stone-100">
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-stone-800 mb-2">Login</h2>
+          <p className="text-stone-500 text-sm">
             Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
-              </Button>
+          </p>
+        </div>
+        <form onSubmit={handleLogin}>
+          <div className="flex flex-col gap-5">
+            <div className="grid gap-2">
+              <Label htmlFor="email" className="text-stone-700 text-sm font-medium">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px]"
+              />
             </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="underline underline-offset-4"
-              >
-                Sign up
-              </Link>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password" className="text-stone-700 text-sm font-medium">Password</Label>
+                <Link
+                  href="/auth/forgot-password"
+                  className="ml-auto inline-block text-xs text-stone-500 hover:text-stone-700 underline-offset-4 hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px]"
+              />
             </div>
-          </form>
-        </CardContent>
-      </Card>
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full px-5 py-3.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm mt-2"
+            >
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
+          </div>
+          <div className="mt-6 text-center text-sm text-stone-500">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/auth/sign-up"
+              className="text-stone-700 underline-offset-4 hover:underline font-medium"
+            >
+              Sign up
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -44,7 +44,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
+          emailRedirectTo: `${window.location.origin}/`,
         },
       });
       if (error) throw error;
@@ -58,63 +58,66 @@ export function SignUpForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSignUp}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="repeat-password">Repeat Password</Label>
-                </div>
-                <Input
-                  id="repeat-password"
-                  type="password"
-                  required
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating an account..." : "Sign up"}
-              </Button>
+      <div className="bg-white rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] p-8 border border-stone-100">
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-stone-800 mb-2">Sign up</h2>
+          <p className="text-stone-500 text-sm">
+            Create a new account
+          </p>
+        </div>
+        <form onSubmit={handleSignUp}>
+          <div className="flex flex-col gap-5">
+            <div className="grid gap-2">
+              <Label htmlFor="email" className="text-stone-700 text-sm font-medium">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px]"
+              />
             </div>
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="underline underline-offset-4">
-                Login
-              </Link>
+            <div className="grid gap-2">
+              <Label htmlFor="password" className="text-stone-700 text-sm font-medium">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px]"
+              />
             </div>
-          </form>
-        </CardContent>
-      </Card>
+            <div className="grid gap-2">
+              <Label htmlFor="repeat-password" className="text-stone-700 text-sm font-medium">Repeat Password</Label>
+              <Input
+                id="repeat-password"
+                type="password"
+                required
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px]"
+              />
+            </div>
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full px-5 py-3.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm mt-2"
+            >
+              {isLoading ? "Creating an account..." : "Sign up"}
+            </button>
+          </div>
+          <div className="mt-6 text-center text-sm text-stone-500">
+            Already have an account?{" "}
+            <Link href="/auth/login" className="text-stone-700 underline-offset-4 hover:underline font-medium">
+              Login
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

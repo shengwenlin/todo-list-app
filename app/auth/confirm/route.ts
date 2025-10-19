@@ -7,17 +7,32 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? "/";
+  const code = searchParams.get("code");
+  // Always redirect to home page after email confirmation
+  const next = "/";
 
+  const supabase = await createClient();
+
+  // Handle PKCE flow (new method with code parameter)
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error) {
+      // redirect user to home page
+      redirect(next);
+    } else {
+      // redirect the user to an error page with some instructions
+      redirect(`/auth/error?error=${error?.message}`);
+    }
+  }
+
+  // Handle old OTP flow (with token_hash and type)
   if (token_hash && type) {
-    const supabase = await createClient();
-
     const { error } = await supabase.auth.verifyOtp({
       type,
       token_hash,
     });
     if (!error) {
-      // redirect user to specified redirect URL or root of app
+      // redirect user to home page
       redirect(next);
     } else {
       // redirect the user to an error page with some instructions
@@ -26,5 +41,5 @@ export async function GET(request: NextRequest) {
   }
 
   // redirect the user to an error page with some instructions
-  redirect(`/auth/error?error=No token hash or type`);
+  redirect(`/auth/error?error=No verification code or token`);
 }
