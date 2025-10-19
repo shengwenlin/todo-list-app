@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Check, Circle, Plus, Trash2, Pencil, X, LogIn, UserPlus, LogOut, Image as ImageIcon, XCircle } from "lucide-react";
+import { Check, Circle, Plus, Trash2, Pencil, X, LogIn, UserPlus, LogOut, Image as ImageIcon, XCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -547,7 +547,7 @@ export default function Home() {
           {!user ? (
             <div className="text-center py-12">
               <div className="mb-6">
-                <Circle className="w-16 h-16 mx-auto text-stone-300" />
+                <Info className="w-16 h-16 mx-auto text-stone-300" />
               </div>
               <h2 className="text-xl font-medium text-stone-700 mb-2">Please login to manage your todos</h2>
               <p className="text-stone-500 mb-6">You need to be logged in to create and view your todo list.</p>

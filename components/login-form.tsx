@@ -67,7 +67,7 @@ export function LoginForm({
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px]"
+                className="px-4 py-3 rounded-2xl bg-stone-50 border-stone-200 text-stone-800 placeholder-stone-400 focus:ring-2 focus:ring-cyan-300 focus:border-transparent text-[15px] autofill:bg-stone-50 autofill:text-stone-800"
               />
             </div>
             <div className="grid gap-2">
