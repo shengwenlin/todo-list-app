@@ -502,7 +502,7 @@ export default function Home() {
       <header className="bg-stone-50/80 backdrop-blur-sm border-b border-stone-200/50">
         <div className="max-w-6xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-medium text-stone-800">Todo List</h1>
+            <h1 className={cn("text-xl font-medium text-stone-800", user && "hidden sm:block")}>Todo List</h1>
             
             <div className="flex items-center gap-3">
               {user ? (
@@ -572,14 +572,15 @@ export default function Home() {
             <>
               <form onSubmit={addTodo} className="mb-8">
                 <div className="space-y-3">
-                  <div className="flex gap-3">
+                  {/* 输入框和图片按钮 */}
+                  <div className="flex gap-2 sm:gap-3">
                     <input
                       type="text"
                       value={newTodo}
                       onChange={(e) => setNewTodo(e.target.value)}
                       placeholder="Add a new task..."
                       disabled={loading || uploadingImage}
-                      className="flex-1 px-6 py-4 rounded-3xl bg-stone-50 border border-stone-200 text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all text-[15px] disabled:opacity-50"
+                      className="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-full bg-stone-50 border border-stone-200 text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent transition-all text-[15px] disabled:opacity-50"
                     />
                     <input
                       ref={fileInputRef}
@@ -592,19 +593,22 @@ export default function Home() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={loading || uploadingImage || !!newTodoImage}
-                      className="w-14 h-14 flex items-center justify-center rounded-full bg-stone-200 hover:bg-stone-300 transition-all duration-200 text-stone-700 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-stone-200 hover:bg-stone-300 transition-all duration-200 text-stone-700 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                       title="Add image"
                     >
                       <ImageIcon className="w-5 h-5" />
                     </button>
-                    <button
-                      type="submit"
-                      disabled={loading || uploadingImage}
-                      className="w-14 h-14 flex items-center justify-center rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Plus className="w-5 h-5" />
-                    </button>
                   </div>
+                  
+                  {/* 添加按钮单独一行 */}
+                  <button
+                    type="submit"
+                    disabled={loading || uploadingImage}
+                    className="w-full py-3.5 sm:py-4 flex items-center justify-center gap-2 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  >
+                    <Plus className="w-5 h-5" />
+                    <span>Add Task</span>
+                  </button>
                   
                   {/* 图片预览 */}
                   {newTodoImagePreview && (
