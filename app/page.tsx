@@ -28,6 +28,7 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -262,7 +263,13 @@ export default function Home() {
   // 添加新的 todo
   const addTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTodo.trim() || !user) return;
+    if (!newTodo.trim()) return;
+    
+    // 如果用户未登录，显示登录提示弹窗
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -497,23 +504,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-stone-50 flex flex-col">
       {/* Header with auth buttons */}
       <header className="bg-stone-50/80 backdrop-blur-sm border-b border-stone-200/50">
         <div className="max-w-6xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <h1 className={cn("text-xl font-medium text-stone-800", user && "hidden sm:block")}>Todo List</h1>
+            <h1 className={cn("text-xl font-medium text-stone-800", user && "hidden sm:block")}>Justo</h1>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1 sm:flex-initial justify-between sm:justify-end">
               {user ? (
                 <>
-                  <span className="text-sm text-stone-500">{user.email}</span>
+                  <span className="text-sm text-stone-500 truncate">{user.email}</span>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-sm font-medium shadow-sm"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-cyan-50 transition-all duration-200 text-cyan-600 text-sm font-medium"
                   >
                     <LogOut className="w-4 h-4" />
-                    Logout
+                    <span className="hidden sm:inline">Logout</span>
                   </button>
                 </>
               ) : (
@@ -540,36 +547,11 @@ export default function Home() {
       </header>
 
       {/* Main content */}
-      <div className="py-16 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] p-8 border border-stone-100">
 
-          {!user ? (
-            <div className="text-center py-12">
-              <div className="mb-6">
-                <Info className="w-16 h-16 mx-auto text-stone-300" />
-              </div>
-              <h2 className="text-xl font-medium text-stone-700 mb-2">Please login to manage your todos</h2>
-              <p className="text-stone-500 mb-6">You need to be logged in to create and view your todo list.</p>
-              <div className="flex gap-3 justify-center">
-                <Link
-                  href="/auth/login"
-                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-sm font-medium shadow-sm"
-                >
-                  <LogIn className="w-4 h-4" />
-                  Login
-                </Link>
-                <Link
-                  href="/auth/sign-up"
-                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-stone-50 transition-all duration-200 text-cyan-600 text-sm font-medium border border-cyan-200 shadow-sm"
-                >
-                  <UserPlus className="w-4 h-4" />
-                  Sign Up
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <>
+              {/* 输入表单 - 始终显示 */}
               <form onSubmit={addTodo} className="mb-8">
                 <div className="space-y-3">
                   {/* 输入框和图片按钮 */}
@@ -593,7 +575,7 @@ export default function Home() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={loading || uploadingImage || !!newTodoImage}
-                      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-stone-200 hover:bg-stone-300 transition-all duration-200 text-stone-700 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-stone-50 hover:bg-stone-100 transition-all duration-200 text-stone-600 border border-stone-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                       title="Add image"
                     >
                       <ImageIcon className="w-5 h-5" />
@@ -747,11 +729,62 @@ export default function Home() {
                   </>
                 )}
               </div>
-            </>
-          )}
           </div>
         </div>
       </div>
+
+      {/* 登录提示弹窗 */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowLoginModal(false)}>
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative" onClick={(e) => e.stopPropagation()}>
+            {/* 关闭按钮 */}
+            <button
+              onClick={() => setShowLoginModal(false)}
+              className="absolute top-4 right-4 p-2 text-stone-400 hover:text-stone-600 transition-colors rounded-full hover:bg-stone-100"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            {/* 图标 */}
+            <div className="mb-6">
+              <Info className="w-16 h-16 mx-auto text-cyan-600" />
+            </div>
+            
+            {/* 标题和描述 */}
+            <h2 className="text-2xl font-semibold text-stone-800 mb-3 text-center">Login Required</h2>
+            <p className="text-stone-500 mb-8 text-center">
+              You need to be logged in to save your todos. Sign up now or log in to your existing account.
+            </p>
+            
+            {/* 按钮 */}
+            <div className="space-y-3">
+              <Link
+                href="/auth/sign-up"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-base font-medium shadow-lg"
+                onClick={() => setShowLoginModal(false)}
+              >
+                <UserPlus className="w-5 h-5" />
+                Sign up
+              </Link>
+              <Link
+                href="/auth/login"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-stone-50 transition-all duration-200 text-cyan-600 text-base font-medium border-2 border-stone-200"
+                onClick={() => setShowLoginModal(false)}
+              >
+                <LogIn className="w-5 h-5" />
+                Log in
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="py-8 text-center">
+        <p className="text-xs text-stone-400">
+          Vibe Coded by Shengwen with ❤️
+        </p>
+      </footer>
     </div>
   );
 }
