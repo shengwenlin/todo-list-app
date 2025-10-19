@@ -4,8 +4,8 @@ import { ArrowLeft } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-stone-50 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto">
+    <div className="min-h-screen bg-stone-50 flex flex-col py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-lg mx-auto flex-1">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-700 mb-8 transition-colors text-sm"
@@ -15,6 +15,11 @@ export default function Page() {
         </Link>
         <LoginForm />
       </div>
+      <footer className="py-12 text-center mt-auto">
+        <p className="text-xs text-stone-400">
+          Vibe Coded by Shengwen with ❤️
+        </p>
+      </footer>
     </div>
   );
 }
