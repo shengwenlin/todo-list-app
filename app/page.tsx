@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Check, Circle, Plus, Trash2, Pencil, X, LogIn, UserPlus, LogOut, Image as ImageIcon, XCircle, Info } from "lucide-react";
+import { Check, Circle, Plus, Trash2, Pencil, X, LogOut, Image as ImageIcon, XCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -511,10 +511,10 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h1 className={cn("text-xl font-medium text-stone-800", user && "hidden sm:block")}>Justo</h1>
             
-            <div className="flex items-center gap-3 flex-1 sm:flex-initial justify-between sm:justify-end">
+            <div className="flex items-center gap-2 flex-1 sm:flex-initial justify-end">
               {user ? (
                 <>
-                  <span className="text-sm text-stone-500 truncate">{user.email}</span>
+                  <span className="text-sm text-stone-500 truncate mr-1">{user.email}</span>
                   <button
                     onClick={handleLogout}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-cyan-50 transition-all duration-200 text-cyan-600 text-sm font-medium"
@@ -527,17 +527,15 @@ export default function Home() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-sm font-medium shadow-sm"
+                    className="px-4 py-2 rounded-full hover:bg-cyan-50 transition-all duration-200 text-cyan-600 text-sm font-medium"
                   >
-                    <LogIn className="w-4 h-4" />
-                    Login
+                    Log in
                   </Link>
                   <Link
                     href="/auth/sign-up"
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-stone-50 transition-all duration-200 text-cyan-600 text-sm font-medium border border-cyan-200 shadow-sm"
+                    className="px-5 py-2.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-sm font-medium shadow-sm"
                   >
-                    <UserPlus className="w-4 h-4" />
-                    Sign Up
+                    Sign up
                   </Link>
                 </>
               )}
@@ -760,18 +758,16 @@ export default function Home() {
             <div className="space-y-3">
               <Link
                 href="/auth/sign-up"
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-base font-medium shadow-lg"
+                className="w-full flex items-center justify-center px-6 py-3.5 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white text-base font-medium shadow-lg"
                 onClick={() => setShowLoginModal(false)}
               >
-                <UserPlus className="w-5 h-5" />
                 Sign up
               </Link>
               <Link
                 href="/auth/login"
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-stone-50 transition-all duration-200 text-cyan-600 text-base font-medium border-2 border-stone-200"
+                className="w-full flex items-center justify-center px-6 py-3.5 rounded-full bg-white hover:bg-stone-50 transition-all duration-200 text-cyan-600 text-base font-medium border-2 border-stone-200"
                 onClick={() => setShowLoginModal(false)}
               >
-                <LogIn className="w-5 h-5" />
                 Log in
               </Link>
             </div>
