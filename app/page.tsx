@@ -509,9 +509,9 @@ export default function Home() {
       <header className="bg-stone-50/80 backdrop-blur-sm border-b border-stone-200/50">
         <div className="max-w-6xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <h1 className={cn("text-xl font-medium text-stone-800", user && "hidden sm:block")}>Justo</h1>
+            <h1 className="text-xl font-medium text-stone-800">Justo</h1>
             
-            <div className="flex items-center gap-2 flex-1 sm:flex-initial justify-end">
+            <div className="flex items-center gap-2 justify-end">
               {user ? (
                 <>
                   <span className="text-sm text-stone-500 truncate mr-1">{user.email}</span>
@@ -552,7 +552,7 @@ export default function Home() {
               {/* 输入表单 - 始终显示 */}
               <form onSubmit={addTodo} className="mb-8">
                 <div className="space-y-3">
-                  {/* 输入框和图片按钮 */}
+                  {/* 输入框和图片按钮/预览 */}
                   <div className="flex gap-2 sm:gap-3">
                     <input
                       type="text"
@@ -569,44 +569,47 @@ export default function Home() {
                       onChange={handleImageSelect}
                       className="hidden"
                     />
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={loading || uploadingImage || !!newTodoImage}
-                      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-stone-50 hover:bg-stone-100 transition-all duration-200 text-stone-600 border border-stone-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                      title="Add image"
-                    >
-                      <ImageIcon className="w-5 h-5" />
-                    </button>
+                    
+                    {/* 图片按钮或预览图 */}
+                    {newTodoImagePreview ? (
+                      <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 group">
+                        <img
+                          src={newTodoImagePreview}
+                          alt="Preview"
+                          className="w-full h-full rounded-full object-cover border-2 border-stone-200"
+                        />
+                        {/* Hover 时显示删除按钮 */}
+                        <button
+                          type="button"
+                          onClick={removeNewTodoImage}
+                          className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                          title="Remove image"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={loading || uploadingImage}
+                        className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-stone-50 hover:bg-stone-100 transition-all duration-200 text-stone-600 border border-stone-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                        title="Add image"
+                      >
+                        <ImageIcon className="w-5 h-5" />
+                      </button>
+                    )}
                   </div>
                   
                   {/* 添加按钮单独一行 */}
                   <button
                     type="submit"
-                    disabled={loading || uploadingImage}
+                    disabled={loading || uploadingImage || (!newTodo.trim() && !newTodoImage)}
                     className="w-full py-3.5 sm:py-4 flex items-center justify-center gap-2 rounded-full bg-cyan-600 hover:bg-cyan-700 transition-all duration-200 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                   >
                     <Plus className="w-5 h-5" />
                     <span>Add Task</span>
                   </button>
-                  
-                  {/* 图片预览 */}
-                  {newTodoImagePreview && (
-                    <div className="relative inline-block">
-                      <img
-                        src={newTodoImagePreview}
-                        alt="Preview"
-                        className="h-24 w-auto rounded-2xl object-cover border-2 border-stone-200"
-                      />
-                      <button
-                        type="button"
-                        onClick={removeNewTodoImage}
-                        className="absolute -top-2 -right-2 p-1 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-lg transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  )}
                   
                   {uploadingImage && (
                     <div className="text-sm text-cyan-600">
